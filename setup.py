@@ -10,7 +10,7 @@ setuptools.setup(
     author_email="git@adamhlavacek.com",
     description="A Python client for wedos.com API",
     long_description=long_description,
-    url="https://github.com/esoadamo/Python-SQLiteDB",
+    url=" https://github.com/esoadamo/Python-WAPI",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
