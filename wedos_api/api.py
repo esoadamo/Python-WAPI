@@ -5,7 +5,7 @@ from typing import Optional, Dict, Any, Iterator, List
 
 import requests as req
 
-from models import WAPIRequest, WAPIResponse, WAPIDomainRecordType, WAPIDomainRecord, WAPIDomainStatus
+from .models import WAPIRequest, WAPIResponse, WAPIDomainRecordType, WAPIDomainRecord, WAPIDomainStatus
 
 
 class WAPIError(Exception):
