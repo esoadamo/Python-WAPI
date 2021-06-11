@@ -128,6 +128,15 @@ class WAPI:
                              status=self.__str_to_domain_status(domain_dict['status'])
                              )
 
+    @property
+    def domains_as_dict(self) -> Dict[str, List[Dict]]:
+        """
+        Returns all domains in dictionary format
+        domain: records
+        :return: all domains in dictionary
+        """
+        return {domain.domain_name: list(domain.records_as_dict) for domain in self.domains}
+
     @staticmethod
     def __str_to_domain_status(domain_status_str: str) -> WAPIDomainStatus:
         domain_status_str = domain_status_str.upper()
@@ -158,6 +167,14 @@ class WAPIDomain:
         self.__status = status
 
     @property
+    def domain_name(self) -> str:
+        """
+        Gets domain name
+        :return: domain name
+        """
+        return self.__domain
+
+    @property
     def records(self) -> Iterator[WAPIDomainRecord]:
         """
         Loads all record rows from this domain and returns it
@@ -170,6 +187,18 @@ class WAPIDomain:
         if not records_str:
             return []
         return map(WAPIDomain.__row_dict_to_row, records_str)
+
+    @property
+    def records_as_dict(self) -> Iterator[Dict]:
+        """
+        Loads all record rows from this domain and returns it as dictionary
+        :return: all record rows from this domain
+        """
+        for x in self.records:
+            d = dict(x._asdict())
+            d['record_type'] = d['record_type'].value
+            d['changed'] = d['changed'].strftime(WAPI.date_format)
+            yield d
 
     def add_record(self,
                    name: str,
@@ -243,14 +272,3 @@ class WAPIDomain:
             author_comment=row_dict['author_comment']
         )
 
-
-if __name__ == '__main__':
-    def main() -> None:
-        from os import environ
-        dns_user, dns_secret = environ.get('DNS_USER'), environ.get('DNS_KEY')
-        assert dns_user and dns_secret
-        api = WAPI(dns_user, dns_secret)
-        # api.set_test_mode(True)
-        print(list(api.domains))
-
-    main()

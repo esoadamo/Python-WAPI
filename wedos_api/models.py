@@ -33,6 +33,7 @@ class WAPIDomainRecordType(Enum):
     MX = 'MX'
     SSHFP = 'SSHFP'
     TXT = 'TXT'
+    CNAME = 'CNAME'
 
 
 class WAPIDomainRecord(NamedTuple):
